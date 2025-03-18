@@ -1,0 +1,43 @@
+{% render 'partials/head.liquid' %}
+
+<main>
+    <nav class="nav-bar">
+        <img class="logo-svg" src="/img/logo-mobile.svg" alt="DDA logo">
+        <button>
+            <img class="hamburger-svg" src="/img/hamburger.svg" alt="">
+        </button>
+    </nav>
+
+    {% if lidDetails %}
+        <section class="lid-info">
+            <h1>{{ lidDetails.title }}</h1>
+            <img class="lid-image" src="https://fdnd-agency.directus.app/assets/{{ lidDetails.photo }}" alt="{{ lidDetails.title }}">
+            <p>{{ lidDetails.description }}</p>
+        </section>
+       
+      {% else %}
+        <p>Lid niet gevonden.</p>
+    {% endif %}
+
+        
+    <section class="vacatures">
+        <h3>VACATURES</h3>
+    </section>
+
+    <section class="cases">
+        <h3>CASES</h3>
+    </section>
+
+    <section class="contact">
+        <h3>CONTACT</h3>
+        <h6>{{ lidDetails.title }}</h6>
+        {% assign addressDetails = lidDetails.address | split: " "  %}
+        {% comment %} TODO: get first two of array, get everything after the first 2 {% endcomment %}
+        <h6>{{addressDetails[0] }} {{addressDetails[1] }}<br>
+        {{ addressDetails[2] }} {{ addressDetails[3] }} {{ addressDetails[4] }} {{ addressDetails[5] }}
+        </h6>
+        <h6>{{ lidDetails.phone }}</h6>
+        <h6>{{ lidDetails.email }}</h6>
+    </section>
+</main>
+{% render 'partials/foot.liquid' %}

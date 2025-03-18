@@ -1,0 +1,72 @@
+/* Kleuren */
+:root {
+    --black: #222226;
+    --grey: #666666;
+    --white: #FFFFFF;
+    --blue: #364BF7;
+   }
+   
+/* ===== TYPOGRAFIE DESKTOP ===== */
+/* ===== TYPOGRAFIE ===== */
+h1 {
+    font-size: clamp(48px, 6vw, 96px);
+    font-weight: 600;
+    line-height: clamp(48px, 6vw, 96px);
+    letter-spacing: -0.04em;
+}
+
+h2 {
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 600;
+    line-height: clamp(40px, 5vw, 64px);
+    letter-spacing: -0.04em;
+}
+
+h3 {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 600;
+    line-height: clamp(32px, 4vw, 48px);
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+}
+
+h4 {
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 400;
+    line-height: clamp(32px, 4vw, 40px);
+}
+
+h5 {
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-weight: 600;
+    line-height: 40px;
+}
+
+h6 {
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-weight: 400;
+    line-height: 40px;
+}
+
+p {
+    font-size: clamp(16px, 2vw, 18px);
+    font-weight: 400;
+    line-height: clamp(24px, 3vw, 32px);
+}
+
+/* Subtext met monospace font */
+.subtext{
+    font-family: 'Martian Mono', monospace;
+    font-size: clamp(16px, 2vw, 18px);
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+}
+
+a{
+    font-family: 'Martian Mono', monospace;
+    font-size: clamp(16px, 2vw, 18px);
+    font-weight: 700;
+    line-height: 24px;
+}

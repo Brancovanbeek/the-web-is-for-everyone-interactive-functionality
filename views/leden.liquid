@@ -1,0 +1,103 @@
+{% render 'partials/head.liquid' %}
+
+<main>
+    <nav class="nav-bar">
+        <img class="logo-svg" src="/img/logo-mobile.svg" alt="DDA logo">
+        <button>
+            <img class="hamburger-svg" src="/img/hamburger.svg" alt="">
+        </button>
+    </nav>
+    <section class="page-title-container">
+        <section class="page-title">
+            <a class="subtext" href="">
+                <img src="/img/arrow-left.svg" alt="">TERUG NAAR HOME
+            </a>
+            <h1>ONZE LEDEN</h1>
+        </section>
+        
+        <section class="page-title-content">
+            <h6>De {{ leden | size }} beste digitale bureaus van Nederland zijn verenigd in Dutch Digital Agencies. Zet de juiste filters aan en zoek contact met het bureau dat het beste bij past bij jouw vraagstuk en uitdaging. Ook DDA lid worden? Ga dan naar deze pagina voor meer informatie.</h6>
+        </section>
+    </section>
+    <section class="filter-container">
+        <section class="search-bar">
+            <input type="text" placeholder="Zoek een bureau..." id="search" name="search">
+        </section>
+        
+        <form class="filters">
+            <!-- Provincie filter -->
+            <section class="provincie-filter">
+                <select class="subtext" name="provincie" id="provincie" onchange="if(this.value) window.location.href='/leden/'  + this.value;">
+                    <option value="">PROVINCIES</option>
+                    <option value="Noord-Holland">Noord-Holland</option>
+                    <option value="Zuid-Holland">Zuid-Holland</option>
+                    <option value="Groningen">Groningen</option>
+                    <option value="Friesland">Friesland</option>
+                    <option value="Drenthe">Drenthe</option>
+                    <option value="Overijssel">Overijssel</option>
+                    <option value="Flevoland">Flevoland</option>
+                    <option value="Gelderland">Gelderland</option>
+                    <option value="Utrecht">Utrecht</option>
+                    <option value="Limburg">Limburg</option>
+                    <option value="Noord-Brabant">Noord-Brabant</option>
+                    <option value="Zeeland">Zeeland</option>
+                </select>  
+
+                <span class="select-button-icon">
+                    <img src="/img/plus.svg" alt="">
+                </span>                 
+            </section>
+
+            <!-- Omvang filter -->
+            <section class="omvang-filter">
+                <select class="subtext" name="omvang" id="omvang">
+                    <option value="">OMVANG</option>
+                    <option value="1-9">1-9</option>
+                    <option value="10-24">10-24</option>
+                    <option value="25-49">25-49</option>
+                    <option value="50-99">50-99</option>
+                    <option value="100-249">100-249</option>
+                    <option value="250+">250+</option>
+                </select>  
+                <span class="select-button-icon">
+                    <img src="/img/plus.svg" alt="">
+                </span>      
+            </section>
+
+            <!-- Sorteren filter -->
+            <section class="sorteren-filter">
+                <select class="subtext" name="sorteren" id="sorteren" onchange="if(this.value) window.location.href='/leden/zoeken/' + this.value;">
+                    <option value="">SORTEREN</option>
+                    <option value="az">A-Z</option>
+                    <option value="za">Z-A</option>
+                    <option value="colleagues">Aantal werknemers</option>
+                </select>
+                <span class="select-button-icon">
+                    <img src="/img/plus.svg" alt="">
+                </span>    
+            </section>   
+        </form>
+    </section>
+
+
+
+    <section class="leden-card-grid">
+    {% for lid in leden %}
+      <section class="leden-card">
+        <img loading="lazy" alt="{{ lid.title }}" src="https://fdnd-agency.directus.app/assets/{{ lid.photo }}" width="200">
+        <h3>{{ lid.title | upcase }}</h3>
+        <p class="subtext">{{ lid.address | split: " " | last | upcase }}</p>
+        <p class="subtext">{{ lid.colleagues | upcase }} WERKNEMERS</p>
+        <a href="/leden/lid/{{ lid.id }}">DETAILS
+            <img src="/img/arrow.svg" alt="">
+        </a>
+      </section>
+    {% endfor %}
+    </section>
+
+    <script src="/scripts/script.js"></script>
+
+</main>
+
+
+{% render 'partials/foot.liquid' %}

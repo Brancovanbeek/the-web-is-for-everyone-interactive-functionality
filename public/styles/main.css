@@ -1,0 +1,208 @@
+body {
+    font-family: 'Archivo', sans-serif;
+    color: var(--black);
+    background-color: var(--white);
+    padding: 0;
+    margin: 0;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box; /* Zorgt ervoor dat alles border-box gebruikt */
+}
+
+/* header */
+
+.nav-bar {
+    display: flex;
+    justify-content: space-between;
+    max-width: 100%;
+    padding: 8px 16px;
+    border-bottom: solid var(--black) 1px;
+}
+
+.nav-bar > button{
+    border: solid var(--black) 1px;
+    background-color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+/* title container */
+
+.page-title-container{
+    border-bottom: solid var(--black) 1px;
+}
+
+.page-title{
+    display: flex;
+    flex-direction: column;
+}
+
+.page-title > a{
+    text-decoration: none;
+    color: var(--black);
+    display: flex;
+    justify-content: center;
+}
+
+.page-title > h1{
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.page-title-content > p{
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.filter-container{
+    border-bottom: solid 1px var(--black);
+}
+
+.filters{
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    flex-wrap: wrap;
+    margin-bottom: 1em;
+}
+
+.search-bar > input{
+    border: none;
+    border-bottom: 1px solid var(--black);
+    color: var(--black);
+    margin-bottom: 1em;
+}
+
+.provincie-filter, .omvang-filter, .sorteren-filter {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    cursor: pointer;
+    border: 1px solid var(--black);
+}
+
+select {
+    cursor: pointer;
+    appearance: none; /* Verwijdert de standaard dropdown-pijl */
+    padding: 12px 16px;
+    text-transform: uppercase;
+    border: none !important;
+}
+
+.select-button-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-left: solid var(--black) 1px;
+}
+
+.select-button-icon img {
+    width: 25px;
+    height: 25px;
+}
+
+/* ledencards */
+
+.leden-card-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* Drie kolommen voor grotere schermen */
+    grid-template-rows: auto;
+}
+
+@media (max-width: 1024px) {
+    .leden-card-grid {
+        grid-template-columns: 1fr 1fr; /* Twee kolommen voor medium schermen */
+    }
+}
+
+@media (max-width: 600px) {
+    .leden-card-grid {
+        grid-template-columns: 1fr; /* Eén kolom voor kleinere schermen */
+    }
+}
+
+.leden-card{
+    width: 100%;
+    border-right: solid 1px var(--black);
+    border-bottom: solid 1px var(--black);
+    padding: 2em;
+}
+
+.leden-card img{
+    border: solid 1px var(--black);
+    width: 100%;
+    height: 312px;
+    object-fit: cover;
+}
+
+.leden-card a{
+    text-decoration: none;
+    color: var(--blue);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: fit-content;
+}
+
+.leden-card a img{
+    width: 15px;
+    height: 15px;
+    border: none;
+}
+
+
+/* detailpagina */
+.lid-image{
+    width: 100%;
+}
+
+
+/* footer */
+footer ul li{
+    list-style: none;
+}
+
+footer section{
+    border-bottom: 1px solid black;
+}
+
+.infinite-logo-container{
+    width: 100vw;
+    overflow: hidden;
+    margin: 0;
+}
+
+.infinite-logo-bar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: scroll 10s linear infinite;
+}
+
+@keyframes scroll{
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.infinite-logo-bar > img{
+    width: 5em;
+    height: 5em;
+    border: none;
+    border: 1px solid var(--black);
+    padding: 1em;
+    border-collapse: collapse;
+}
