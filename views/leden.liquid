@@ -1,15 +1,9 @@
 {% render 'partials/head.liquid' %}
 
 <main>
-    <nav class="nav-bar">
-        <img class="logo-svg" src="/img/logo-mobile.svg" alt="DDA logo">
-        <button>
-            <img class="hamburger-svg" src="/img/hamburger.svg" alt="">
-        </button>
-    </nav>
     <section class="page-title-container">
         <section class="page-title">
-            <a class="subtext" href="">
+            <a class="subtext" href="/">
                 <img src="/img/arrow-left.svg" alt="">TERUG NAAR HOME
             </a>
             <h1>ONZE LEDEN</h1>
@@ -79,20 +73,23 @@
         </form>
     </section>
 
-
-
     <section class="leden-card-grid">
     {% for lid in leden %}
       <section class="leden-card">
         <img loading="lazy" alt="{{ lid.title }}" src="https://fdnd-agency.directus.app/assets/{{ lid.photo }}" width="200">
         <h3>{{ lid.title | upcase }}</h3>
         <p class="subtext">{{ lid.address | split: " " | last | upcase }}</p>
-        <p class="subtext">{{ lid.colleagues | upcase }} WERKNEMERS</p>
+        <p class="subtext">{{ lid.colleagues | upcase }} WERKNEMER{% if lid.colleagues > 1%}S{% endif %}</p>
         <a href="/leden/lid/{{ lid.id }}">DETAILS
             <img src="/img/arrow.svg" alt="">
         </a>
       </section>
     {% endfor %}
+    </section>
+
+    <section>
+        <a href="/leden/nieuw/form">+ Lid toevoegen</a>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum debitis numquam officiis possimus incidunt vero laboriosam cupiditate odit! Nostrum repellat ut dolorum? Repellendus doloribus amet consequuntur deleniti omnis rerum cum.</p>
     </section>
 
     <script src="/scripts/script.js"></script>
