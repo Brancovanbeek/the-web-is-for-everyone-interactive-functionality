@@ -18,10 +18,10 @@
             <input type="text" placeholder="Zoek een bureau..." id="search" name="search">
         </section>
         
-        <form class="filters">
+        <form class="filters" method="get" action="/leden">
             <!-- Provincie filter -->
             <section class="provincie-filter">
-                <select class="subtext" name="provincie" id="provincie" onchange="if(this.value) window.location.href='/leden/'  + this.value;">
+                <select class="subtext" name="provincie" id="provincie">
                     <option value="">PROVINCIES</option>
                     <option value="Noord-Holland">Noord-Holland</option>
                     <option value="Zuid-Holland">Zuid-Holland</option>
@@ -60,7 +60,7 @@
 
             <!-- Sorteren filter -->
             <section class="sorteren-filter">
-                <select class="subtext" name="sorteren" id="sorteren" onchange="if(this.value) window.location.href='/leden/zoeken/' + this.value;">
+                <select class="subtext" name="sorteren" id="sorteren">
                     <option value="">SORTEREN</option>
                     <option value="az">A-Z</option>
                     <option value="za">Z-A</option>
@@ -70,6 +70,8 @@
                     <img src="/img/plus.svg" alt="">
                 </span>    
             </section>   
+
+            <button type="submit">SUBMIT</button>
         </form>
     </section>
 
@@ -87,13 +89,19 @@
     {% endfor %}
     </section>
 
-    <section>
+    <section class="lid-toevoegen-container">
         <a href="/leden/nieuw/form">+ Lid toevoegen</a>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum debitis numquam officiis possimus incidunt vero laboriosam cupiditate odit! Nostrum repellat ut dolorum? Repellendus doloribus amet consequuntur deleniti omnis rerum cum.</p>
     </section>
 
-    <script src="/scripts/script.js"></script>
+    {% if succes_message %}
+    <section class="succes-box">
+        <h6>Succes!</h6>
+        <p class="succes_message">{{ succes_message }}</p>
+    </section>
+    {% endif %}
 
+
+    <script src="/scripts/script.js"></script>
 </main>
 
 
