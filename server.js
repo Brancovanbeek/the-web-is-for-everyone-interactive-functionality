@@ -38,56 +38,135 @@ app.get('/leden/lid/:id', async function (request, response) {
   response.render('lid.liquid', { lidDetails: apiResponseJSON.data });
 })
 
+
+
 // leden overzichts pagina
+// app.get('/leden', async function (request, response) {
+//   const apiResponse = await fetch('https://fdnd-agency.directus.app/items/dda_agencies')
+//   const apiResponseJSON = await apiResponse.json()
+
+//   const extraLedenFetch = await fetch('https://fdnd-agency.directus.app/items/dda_messages?filter={%22text%22:%20{%22_contains%22:%22Branco_%22}}');
+//   const extraLedenJSON = await extraLedenFetch.json()
+
+//   let extraLeden = []
+//   if (extraLedenJSON.data.length > 0) {
+//     extraLeden = extraLedenJSON.data.map((lid) => {
+//       return {
+//         title: lid.text.replace('Branco_', ''),
+//         address: lid.for,
+//         colleagues: lid.from
+//       }
+//     })
+//   }
+
+//   const {provincie} = request.query;
+//   console.log(request.query);
+
+
+//   let apiResponseProvincie;
+
+//   if (provincie === undefined || provincie === '') {
+//     apiResponseProvincie = await fetch ('https://fdnd-agency.directus.app/items/dda_agencies');
+//   } else {
+//     apiResponseProvincie = await fetch ('https://fdnd-agency.directus.app/items/dda_agencies?filter[province_string][_eq]=' + request.query.provincie)
+//   }
+
+//   const apiResponseProvincieJSON = await apiResponseProvincie.json()
+
+//   response.render('leden.liquid', { leden: [...apiResponseJSON.data, ...extraLeden] })
+// })
+
+
 app.get('/leden', async function (request, response) {
-  const apiResponse = await fetch('https://fdnd-agency.directus.app/items/dda_agencies')
-  const apiResponseJSON = await apiResponse.json()
+  // Verkrijg de filters uit de queryparameters
+  const { provincie, omvang, sorteren } = request.query;
 
+  // Basis URL voor de API-aanroep
+  let apiUrl = 'https://fdnd-agency.directus.app/items/dda_agencies';
+
+  // Als een provincie is opgegeven, voeg die toe aan de filter
+  if (provincie && provincie !== '') {
+    apiUrl += `?filter[province_string][_eq]=${provincie}`;
+  }
+
+  // Als sorteren is opgegeven, voeg dat toe
+  if (sorteren && sorteren !== '') {
+    const connector = apiUrl.includes('?') ? '&' : '?';
+    if (sorteren === 'az') {
+      apiUrl += `${connector}sort=title`;
+    } else if (sorteren === 'za') {
+      apiUrl += `${connector}sort=-title`;
+    } else if (sorteren === 'colleagues') {
+      apiUrl += `${connector}sort=colleagues`;
+    }
+  }
+
+  // Haal de data op van de API
+  const apiResponse = await fetch(apiUrl);
+  const apiResponseJSON = await apiResponse.json();
+
+  // Haal extra leden op (indien nodig)
   const extraLedenFetch = await fetch('https://fdnd-agency.directus.app/items/dda_messages?filter={%22text%22:%20{%22_contains%22:%22Branco_%22}}');
-  const extraLedenJSON = await extraLedenFetch.json()
+  const extraLedenJSON = await extraLedenFetch.json();
 
-  let extraLeden = []
+  let extraLeden = [];
   if (extraLedenJSON.data.length > 0) {
     extraLeden = extraLedenJSON.data.map((lid) => {
       return {
         title: lid.text.replace('Branco_', ''),
         address: lid.for,
         colleagues: lid.from
-      }
-    })
+      };
+    });
   }
 
-  response.render('leden.liquid', { leden: [...apiResponseJSON.data, ...extraLeden] })
-})
+  // Combineer de data van de agencies met de extra leden
+  let leden = [...apiResponseJSON.data, ...extraLeden];
 
-// provincie filter
-app.get('/leden/:id', async function (request, response) {
-  const apiResponse = await fetch('https://fdnd-agency.directus.app/items/dda_agencies?filter={"province_string" : "'+ request.params.id+'"} ')
-  const apiResponseJSON = await apiResponse.json()
-  console.log(request.params.id)
+  // Render de data naar de view
+  response.render('leden.liquid', { leden });
+});
+
+
+// // provincie filter
+// app.get('/leden', async function (request, response) {
+//   const apiResponse = await fetch('https://fdnd-agency.directus.app/items/dda_agencies?filter={"province_string" : "'+ request.params.id+'"} ')
+//   const apiResponseJSON = await apiResponse.json()
+//   console.log(request.params.id)
+//   console.log(request.query);
  
-  response.render('leden.liquid', { leden: apiResponseJSON.data })
-})
+//   response.render('leden.liquid', { leden: apiResponseJSON.data, succes_message: request.query.succes })
+// })
+
+// app.get('/leden/:id', async function (request, response) {
+//   const apiResponse = await fetch('https://fdnd-agency.directus.app/items/dda_agencies?filter={"province_string" : "'+ request.params.id+'"} ')
+//   const apiResponseJSON = await apiResponse.json()
+//   console.log(request.params.id)
+ 
+//   response.render('leden.liquid', { leden: apiResponseJSON.data })
+// })
+
 
 // sorteren
-app.get('/leden/zoeken/:wat', async function (request, response) {
-  let searcher;
-  if (request.params.wat == "az") {
-    searcher = 'title';
-  } else if (request.params.wat == "za") {
-    searcher = '-title';
-  } else if (request.params.wat == "colleagues") {
-    searcher = 'colleagues';
-  } else {
-    searcher = "";
-  }
+// app.get('/leden/zoeken/:wat', async function (request, response) {
+//   let searcher;
+//   if (request.params.wat == "az") {
+//     searcher = 'title';
+//   } else if (request.params.wat == "za") {
+//     searcher = '-title';
+//   } else if (request.params.wat == "colleagues") {
+//     searcher = 'colleagues';
+//   } else {
+//     searcher = "";
+//   }
   
-  const apiResponse = await fetch('https://fdnd-agency.directus.app/items/dda_agencies?sort=' + searcher);
-  const apiResponseJSON = await apiResponse.json();
-  console.log(request.params.wat);
+//   const apiResponse = await fetch('https://fdnd-agency.directus.app/items/dda_agencies?sort=' + searcher);
+//   const apiResponseJSON = await apiResponse.json();
+//   console.log(request.params.wat);
   
-  response.render('leden.liquid', { leden: apiResponseJSON.data });
-});
+//   response.render('leden.liquid', { leden: apiResponseJSON.data });
+// });
+
 
 // lid toevoegen form pagina
 app.get('/leden/nieuw/form', async function (request, response) {
@@ -97,7 +176,7 @@ app.get('/leden/nieuw/form', async function (request, response) {
   response.render('nieuw.liquid', { leden: apiResponseJSON.data });
 });
 
-// lid toevoegen button
+// lid toevoegen
 app.post('/leden/nieuw/toevoegen/', async function (request, response) {
   await fetch('https://fdnd-agency.directus.app/items/dda_messages/', {
     method: 'POST',
@@ -111,47 +190,10 @@ app.post('/leden/nieuw/toevoegen/', async function (request, response) {
     }
   });
 
-  response.redirect(303, '/leden');
+  response.redirect(303, '/leden?succes=Lid toegevoegd!');
 })
 
-
-
-
-
-
-
-// app.post('/leden/nieuw/toevoegen', async function (request, response) {
-//   const { title, photo, address, colleagues } = request.body;
-
-//   // Gegevens sturen naar de API
-//   const apiResponse = await fetch('https://fdnd-agency.directus.app/items/dda_agencies', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify({
-//       title: request.body.title,
-//       photo: request.body.photo,// De foto is hier een tekstveld (bijv. bestand-ID of URL)
-//       address: request.body.address,
-//       colleagues: request.body.colleagues
-//     }),
-//   });
-
-//   if (apiResponse.ok) {
-//     // Haal de bijgewerkte lijst van leden op nadat het lid is toegevoegd
-//     const apiResponse = await fetch('https://fdnd-agency.directus.app/items/dda_agencies');
-//     const apiResponseJSON = await apiResponse.json();
-
-//     // Toon de bijgewerkte lijst van leden op de /leden pagina
-//     response.render('leden.liquid', { leden: apiResponseJSON.data });
-//   } else {
-//     response.status(500).send('Er is een fout opgetreden bij het toevoegen van het lid.');
-//   }
-// });
-
-
 // app.post('/', (req, res) => {
-
 
 
 /*
