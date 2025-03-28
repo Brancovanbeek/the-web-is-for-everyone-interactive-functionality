@@ -178,7 +178,7 @@ app.get('/leden/nieuw/form', async function (request, response) {
 
 // lid toevoegen
 app.post('/leden/nieuw/toevoegen/', async function (request, response) {
-  await fetch('https://fdnd-agency.directus.app/items/dda_messages/', {
+  const res = await fetch('https://fdnd-agency.directus.app/items/dda_messages/', {
     method: 'POST',
     body: JSON.stringify({
       text: "Branco_" + request.body.title,
@@ -190,8 +190,33 @@ app.post('/leden/nieuw/toevoegen/', async function (request, response) {
     }
   });
 
-  response.redirect(303, '/leden?succes=Lid toegevoegd!');
-})
+  // Als de fetch-aanroep succesvol is
+  if (res.ok) {
+    response.redirect(303, '/leden?succes=' + encodeURIComponent('Lid toegevoegd!'));
+  } else {
+    // Als de fetch-aanroep faalt
+    response.redirect(303, '/leden?error=' + encodeURIComponent('Er is een fout opgetreden.'));
+  }
+});
+
+
+
+
+// app.post('/leden/nieuw/toevoegen/', async function (request, response) {
+//   await fetch('https://fdnd-agency.directus.app/items/dda_messages/', {
+//     method: 'POST',
+//     body: JSON.stringify({
+//       text: "Branco_" + request.body.title,
+//       for: request.body.address,
+//       from: request.body.colleagues,
+//     }),
+//     headers: {
+//       'Content-Type': 'application/json;charset=UTF-8'
+//     }
+//   });
+
+//   response.redirect(303, '/leden?succes=Lid toegevoegd!');
+// })
 
 // app.post('/', (req, res) => {
 
@@ -231,6 +256,8 @@ app.post(…, async function (request, response) {
   response.redirect(303, …)
 })
 */
+
+
 
 
 // Stel het poortnummer in waar Express op moet gaan luisteren
