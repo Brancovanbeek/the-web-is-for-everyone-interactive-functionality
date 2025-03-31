@@ -12,6 +12,10 @@ body {
     box-sizing: border-box; /* Zorgt ervoor dat alles border-box gebruikt */
 }
 
+main{
+    width: 100%;
+}
+
 /* header */
 
 .nav-bar {
@@ -36,6 +40,7 @@ body {
 
 .page-title-container{
     border-bottom: solid var(--black) 1px;
+    padding: 1em;
 }
 
 .page-title{
@@ -48,6 +53,8 @@ body {
     color: var(--black);
     display: flex;
     justify-content: center;
+    margin-top: 2em;
+    margin-bottom: 2em;
 }
 
 .page-title > h1{
@@ -63,9 +70,11 @@ body {
 
 .filter-container{
     border-bottom: solid 1px var(--black);
+    padding: 1em;
 }
 
 .filters{
+    margin-top: 1em;
     display: flex;
     flex-direction: row;
     gap: 1em;
@@ -115,19 +124,20 @@ select {
 .leden-card-grid {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* Drie kolommen voor grotere schermen */
+    grid-template-columns: 1fr; 
     grid-template-rows: auto;
 }
 
-@media (max-width: 1024px) {
+@media (min-width: 700px) {
     .leden-card-grid {
-        grid-template-columns: 1fr 1fr; /* Twee kolommen voor medium schermen */
+        grid-template-columns: 1fr 1fr; 
     }
+    
 }
 
-@media (max-width: 600px) {
+@media (min-width: 1340px) {
     .leden-card-grid {
-        grid-template-columns: 1fr; /* Eén kolom voor kleinere schermen */
+        grid-template-columns: 1fr 1fr 1fr; 
     }
 }
 
@@ -207,50 +217,6 @@ footer section{
     border-collapse: collapse;
 }
 
-/* /lid toevoegen */
-.lid-toevoegen-form{
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-    margin: 1em;
-    
-    label{
-    font-size: clamp(16px, 2vw, 18px);
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: -0.04em;
-    text-transform: uppercase; 
-    }
-
-    input{
-        border: solid black 1px;
-        background-color: white;
-        border-radius: 5px;
-        padding: 0.5em;
-    }
-
-    button{
-        width: max-content;
-        border: solid black 1px;
-        background-color: white;
-        border-radius: 5px;
-        padding: 0.5em;
-    }
-}
-
-.lid-toevoegen-container{
-    border-top: solid black 1px;
-    display: flex;
-    justify-content: center;
-    padding: 2em;
-
-   a{
-    text-decoration: none;
-    color: var(--blue);
-   }
-   
-}
-
 .succes-melding, .error-melding {
     padding: 10px;
     border-radius: 5px;
@@ -277,7 +243,72 @@ footer section{
     color: #721c24;
     border: 1px solid #f5c6cb;
 }
-  
 
-  
 
+#filter-submit-button{
+    border: solid black 1px;
+    background: none;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* lid toevoegen */
+  
+.lid-toevoegen-form{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    margin: 1em;
+
+    input{
+        border: solid black 1px;
+        background-color: white;
+        border-radius: 5px;
+        padding: 0.5em;
+    }
+
+    button{
+        margin-top: 1em;
+        width: max-content;
+        border: solid black 1px;
+        background-color: white;
+        border-radius: 5px;
+        padding: 0.5em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+}
+
+.lid-toevoegen-container{
+    padding: 2em;
+}
+
+summary::before {
+	content: '+';
+	margin-left: 0.5em;
+    font-size: 25px;
+    transition: transform 0.3s ease;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+details summary::-webkit-details-marker {
+    display:none;
+}
+
+details[open] summary::before {
+	transform: rotate(45deg);
+}
+
+summary{
+    display: flex;
+    align-items: center;
+	cursor: pointer;
+	gap: 0.5em;
+    font-weight: bold;
+}

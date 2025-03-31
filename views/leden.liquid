@@ -71,7 +71,7 @@
                 </span>    
             </section>   
 
-            <button type="submit">SUBMIT</button>
+            <button class="subtext" id="filter-submit-button"   type="submit">SUBMIT</button>
         </form>
     </section>
 
@@ -89,26 +89,36 @@
     {% endfor %}
     </section>
 
-    <section class="lid-toevoegen-container">
-        <a href="/leden/nieuw/form">+ Lid toevoegen</a>
-    </section>
+   <section class="lid-toevoegen-container">
+        <details class="subtext">
+            <summary>Lid toevoegen</summary>
+            <form class="lid-toevoegen-form" action="/leden/nieuw/toevoegen" method="POST">
+                <label class="subtext" for="title">Agency Name</label>
+                <input placeholder="Funda" name="title" type="text">
+        
+                <label class="subtext" for="address">Agency Location</label>
+                <input placeholder="Amsterdam"  name="address" type="text">
+        
+                <label class="subtext" for="colleagues">Agency Employees</label> 
+                <input placeholder="80" name="colleagues" type="text">
+        
+                <button class="subtext" type="submit">SUBMIT</button>
+            </form>   
+        </details>
+   </section>
+
+
 
     {% if request.query.succes %}
         <div class="succes-melding">
           {{ request.query.succes }}
         </div>
-        <p>Sucess parameter is: {{ request.query.succes }}</p>  <!-- Log voor debugging -->
       {% endif %}
-
-      <p>Sucess parameter is: {{ request.query.succes }}</p>
-        <p>Error parameter is: {{ request.query.error }}</p>
-
       
       {% if request.query.error %}
         <div class="error-melding">
           {{ request.query.error }}
         </div>
-        <p>Error parameter is: {{ request.query.error }}</p>  <!-- Log voor debugging -->
       {% endif %}
       
     

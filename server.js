@@ -168,14 +168,6 @@ app.get('/leden', async function (request, response) {
 // });
 
 
-// lid toevoegen form pagina
-app.get('/leden/nieuw/form', async function (request, response) {
-  const apiResponse = await fetch('https://fdnd-agency.directus.app/items/dda_agencies');
-  const apiResponseJSON = await apiResponse.json();
-
-  response.render('nieuw.liquid', { leden: apiResponseJSON.data });
-});
-
 // lid toevoegen
 app.post('/leden/nieuw/toevoegen/', async function (request, response) {
   const res = await fetch('https://fdnd-agency.directus.app/items/dda_messages/', {
