@@ -128,74 +128,10 @@ app.get('/leden', async function (request, response) {
 });
 
 
-// // provincie filter
-// app.get('/leden', async function (request, response) {
-//   const apiResponse = await fetch('https://fdnd-agency.directus.app/items/dda_agencies?filter={"province_string" : "'+ request.params.id+'"} ')
-//   const apiResponseJSON = await apiResponse.json()
-//   console.log(request.params.id)
-//   console.log(request.query);
- 
-//   response.render('leden.liquid', { leden: apiResponseJSON.data, succes_message: request.query.succes })
-// })
-
-// app.get('/leden/:id', async function (request, response) {
-//   const apiResponse = await fetch('https://fdnd-agency.directus.app/items/dda_agencies?filter={"province_string" : "'+ request.params.id+'"} ')
-//   const apiResponseJSON = await apiResponse.json()
-//   console.log(request.params.id)
- 
-//   response.render('leden.liquid', { leden: apiResponseJSON.data })
-// })
-
-
-// sorteren
-// app.get('/leden/zoeken/:wat', async function (request, response) {
-//   let searcher;
-//   if (request.params.wat == "az") {
-//     searcher = 'title';
-//   } else if (request.params.wat == "za") {
-//     searcher = '-title';
-//   } else if (request.params.wat == "colleagues") {
-//     searcher = 'colleagues';
-//   } else {
-//     searcher = "";
-//   }
-  
-//   const apiResponse = await fetch('https://fdnd-agency.directus.app/items/dda_agencies?sort=' + searcher);
-//   const apiResponseJSON = await apiResponse.json();
-//   console.log(request.params.wat);
-  
-//   response.render('leden.liquid', { leden: apiResponseJSON.data });
-// });
-
-
 // lid toevoegen
-app.post('/leden/nieuw/toevoegen/', async function (request, response) {
-  const res = await fetch('https://fdnd-agency.directus.app/items/dda_messages/', {
-    method: 'POST',
-    body: JSON.stringify({
-      text: "Branco_" + request.body.title,
-      for: request.body.address,
-      from: request.body.colleagues,
-    }),
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-  });
-
-  // Als de fetch-aanroep succesvol is
-  if (res.ok) {
-    response.redirect(303, '/leden?succes=' + encodeURIComponent('Lid toegevoegd!'));
-  } else {
-    // Als de fetch-aanroep faalt
-    response.redirect(303, '/leden?error=' + encodeURIComponent('Er is een fout opgetreden.'));
-  }
-});
-
-
-
 
 // app.post('/leden/nieuw/toevoegen/', async function (request, response) {
-//   await fetch('https://fdnd-agency.directus.app/items/dda_messages/', {
+//   const res = await fetch('https://fdnd-agency.directus.app/items/dda_messages/', {
 //     method: 'POST',
 //     body: JSON.stringify({
 //       text: "Branco_" + request.body.title,
@@ -207,50 +143,14 @@ app.post('/leden/nieuw/toevoegen/', async function (request, response) {
 //     }
 //   });
 
-//   response.redirect(303, '/leden?succes=Lid toegevoegd!');
-// })
-
-// app.post('/', (req, res) => {
-
-
-/*
-// Zie https://expressjs.com/en/5x/api.html#app.get.method over app.get()
-app.get(…, async function (request, response) {
-  
-  // Zie https://expressjs.com/en/5x/api.html#res.render over response.render()
-  response.render(…)
-})
-*/
-
-/*
-// Zie https://expressjs.com/en/5x/api.html#app.post.method over app.post()
-app.post(…, async function (request, response) {
-
-  // In request.body zitten alle formuliervelden die een `name` attribuut hebben in je HTML
-  console.log(request.body)
-
-  // Via een fetch() naar Directus vullen we nieuwe gegevens in
-
-  // Zie https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch over fetch()
-  // Zie https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify over JSON.stringify()
-  // Zie https://docs.directus.io/reference/items.html#create-an-item over het toevoegen van gegevens in Directus
-  // Zie https://docs.directus.io/reference/items.html#update-an-item over het veranderen van gegevens in Directus
-  await fetch(…, {
-    method: …,
-    body: JSON.stringify(…),
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-  });
-
-  // Redirect de gebruiker daarna naar een logische volgende stap
-  // Zie https://expressjs.com/en/5x/api.html#res.redirect over response.redirect()
-  response.redirect(303, …)
-})
-*/
-
-
-
+//   if (res.ok) {
+//     // Stuur een succesbericht terug als JSON
+//     response.json({ success: true, message: 'Lid toegevoegd!' });
+//   } else {
+//     // Stuur een foutbericht terug als JSON
+//     response.json({ success: false, message: 'Er is een fout opgetreden.' });
+//   }
+// });
 
 // Stel het poortnummer in waar Express op moet gaan luisteren
 // Lokaal is dit poort 8000; als deze applicatie ergens gehost wordt, waarschijnlijk poort 80

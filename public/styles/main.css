@@ -217,34 +217,6 @@ footer section{
     border-collapse: collapse;
 }
 
-.succes-melding, .error-melding {
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 16px;
-    text-align: center;
-    width: fit-content;
-    max-width: 80%;
-    margin: 10px auto;
-    position: fixed;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    transition: opacity 1s ease-out;
-}
-  
-.succes-melding {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-  
-.error-melding {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-
 #filter-submit-button{
     border: solid black 1px;
     background: none;
@@ -256,7 +228,6 @@ footer section{
 }
 
 /* lid toevoegen */
-  
 .lid-toevoegen-form{
     display: flex;
     flex-direction: column;
@@ -281,8 +252,11 @@ footer section{
         justify-content: center;
         align-items: center;
         cursor: pointer;
+        position: relative;
     }
 }
+    
+
 
 .lid-toevoegen-container{
     padding: 2em;
@@ -311,4 +285,24 @@ summary{
 	cursor: pointer;
 	gap: 0.5em;
     font-weight: bold;
+}
+
+
+.loader {
+    border: 10px solid #f3f3f3;
+    border-top: 10px solid black;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin .7s cubic-bezier(.21,-0.03,.08,.91) infinite;
+    opacity: 0%;
+}
+  
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.show {
+    opacity: 100%;
 }

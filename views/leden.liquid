@@ -1,6 +1,11 @@
 {% render 'partials/head.liquid' %}
 
 <main>
+
+
+
+
+
     <section class="page-title-container">
         <section class="page-title">
             <a class="subtext" href="/">
@@ -89,10 +94,13 @@
     {% endfor %}
     </section>
 
+    <div class="loader"></div>
+
+
    <section class="lid-toevoegen-container">
         <details class="subtext">
             <summary>Lid toevoegen</summary>
-            <form class="lid-toevoegen-form" action="/leden/nieuw/toevoegen" method="POST">
+            <form class="lid-toevoegen-form" action="/leden/nieuw/toevoegen" method="POST" data-enhanced="form">
                 <label class="subtext" for="title">Agency Name</label>
                 <input placeholder="Funda" name="title" type="text">
         
@@ -119,7 +127,7 @@
         <div class="error-melding">
           {{ request.query.error }}
         </div>
-      {% endif %}
+    {% endif %}
       
     
 
@@ -127,6 +135,54 @@
 
 <script src="/scripts/script.js"></script>
 
+<script type="module">
+// We maken hieronder aannames over wat de browser ondersteunt
+if ('fetch' in window && 'DOMParser' in window) {
+
+  document.addEventListener('submit', async function(event) {
+    const form = event.target;
+
+    // Als dit formulier geen data-enhanced attribuut heeft, doe dan niks
+    if (!form.hasAttribute('data-enhanced')) {
+      return;
+    }
+
+    const loader = document.querySelector('.loader');
+    event.preventDefault();
+    loader.classList.add('show');
+
+    try {
+      // Doe een fetch naar de server, met de gegevens van het formulier
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: new URLSearchParams(new FormData(form)),
+      });
+
+      const data = await response.json();  // Verwerk de JSON response van de server
+
+      // Als de server succes heeft geretourneerd
+      if (data.success) {
+        // Verwerk de nieuwe data (bijvoorbeeld de lijst van leden)
+        const newState = document.querySelector('[data-enhanced="' + form.getAttribute('data-enhanced') + '"]');
+        // Update de UI met de succesboodschap
+        alert(data.message);
+        form.reset();  // Reset het formulier
+
+        // Vervang de formulier HTML met een successtatus
+        form.outerHTML = newState.outerHTML;
+      } else {
+        // Laat een foutmelding zien als de server een fout heeft geretourneerd
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error('Error during form submission:', error);
+      alert('Er is een fout opgetreden tijdens het verzenden.');
+    } finally {
+      loader.classList.remove('show');
+    }
+  });
+}
+</script>
 
 
 {% render 'partials/foot.liquid' %}
