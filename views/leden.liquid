@@ -137,52 +137,73 @@
 
 <script type="module">
 // We maken hieronder aannames over wat de browser ondersteunt
+// Dus laten we deze eerst testen met Feature Detection
+// https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Testing/Feature_detection
 if ('fetch' in window && 'DOMParser' in window) {
 
+  // Als er ergens op de pagina een formulier wordt gesubmit..
+  // (We maken hier gebruik van Event Delegation)
   document.addEventListener('submit', async function(event) {
+
+    // Hou in een variabele bij welk formulier dat was
     const form = event.target;
 
     // Als dit formulier geen data-enhanced attribuut heeft, doe dan niks
+    // Dit doen we, zodat we sommige formulieren op de pagina kunnen 'enhancen'
+    // Data attributen mag je zelf verzinnen; dit is dus niet iets speciaals
+    // https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Solve_HTML_problems/Use_data_attributes
     if (!form.hasAttribute('data-enhanced')) {
       return;
     }
 
     const loader = document.querySelector('.loader');
+
+    // Voorkom de standaard submit van de browser
+    // Let op: hiermee overschrijven we de default Loading state van de browser...
     event.preventDefault();
+
     loader.classList.add('show');
 
     try {
-      // Doe een fetch naar de server, met de gegevens van het formulier
+      // Doe een fetch naar de server, net als hoe de browser dit normaal zou doen
+      // Gebruik daarvoor het action en method attribuut van het originele formulier
+      // Inclusief alle formulierelementen
       const response = await fetch(form.action, {
         method: form.method,
         body: new URLSearchParams(new FormData(form)),
       });
 
-      const data = await response.json();  // Verwerk de JSON response van de server
+      // De server kan HTML teruggeven, dus we verwachten een tekstuele reactie
+      const responseText = await response.text();
 
-      // Als de server succes heeft geretourneerd
-      if (data.success) {
-        // Verwerk de nieuwe data (bijvoorbeeld de lijst van leden)
-        const newState = document.querySelector('[data-enhanced="' + form.getAttribute('data-enhanced') + '"]');
-        // Update de UI met de succesboodschap
-        alert(data.message);
-        form.reset();  // Reset het formulier
+      // Parse de nieuwe HTML en maak hiervan een nieuw Document Object Model in het geheugen
+      const parser = new DOMParser();
+      const responseDOM = parser.parseFromString(responseText, 'text/html');
 
-        // Vervang de formulier HTML met een successtatus
-        form.outerHTML = newState.outerHTML;
-      } else {
-        // Laat een foutmelding zien als de server een fout heeft geretourneerd
-        alert(data.message);
-      }
+      // Zoek in de nieuwe DOM naar onze nieuwe state, die we via Liquid hebben klaargemaakt
+      // We gebruiken hiervoor het data-enhanced attribuut, zodat we weten waar we naar moeten zoeken
+      // (Hierdoor kunnen we ook meerdere formulieren op dezelfde pagina gebruiken)
+      const newState = responseDOM.querySelector('[data-enhanced="' + form.getAttribute('data-enhanced') + '"]');
+
+      // Overschrijf ons formulier met de nieuwe HTML
+      // Hier wil je waarschijnlijk de Loading state vervangen door een Success state
+      form.outerHTML = newState.outerHTML;
+
+      // Optioneel: Je kunt hier ook een succesboodschap tonen aan de gebruiker
+      // Bijvoorbeeld: alert('Formulier succesvol ingediend!');
+      
     } catch (error) {
-      console.error('Error during form submission:', error);
+      console.error('Error tijdens formulierverzending:', error);
       alert('Er is een fout opgetreden tijdens het verzenden.');
     } finally {
+      // Verwijder de loader na afronding
       loader.classList.remove('show');
     }
+
   });
 }
 </script>
+
 
 
 {% render 'partials/foot.liquid' %}
