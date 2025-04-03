@@ -252,7 +252,6 @@ summary{
     width: 50px;
     height: 50px;
     animation: spin .7s cubic-bezier(.21,-0.03,.08,.91) infinite;
-    opacity: 0%;
 }
   
 @keyframes spin {
@@ -260,8 +259,17 @@ summary{
     100% { transform: rotate(360deg); }
 }
 
+.loader{
+    display: none;
+}
+
 .show {
-    opacity: 100%;
+    display: block;
+}
+
+.submitting {
+    opacity: 0.3;
+    transition: opacity 0.3s ease-in-out;
 }
 
 /* footer */
@@ -353,3 +361,16 @@ footer section{
 }
 
 
+/* succes */
+#succes {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    color: rgb(0, 0, 0);
+    background-color: lightgreen;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 9999;
+    display: none;
+}
+  

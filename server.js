@@ -39,44 +39,6 @@ app.get('/leden/lid/:id', async function (request, response) {
 })
 
 
-
-// leden overzichts pagina
-// app.get('/leden', async function (request, response) {
-//   const apiResponse = await fetch('https://fdnd-agency.directus.app/items/dda_agencies')
-//   const apiResponseJSON = await apiResponse.json()
-
-//   const extraLedenFetch = await fetch('https://fdnd-agency.directus.app/items/dda_messages?filter={%22text%22:%20{%22_contains%22:%22Branco_%22}}');
-//   const extraLedenJSON = await extraLedenFetch.json()
-
-//   let extraLeden = []
-//   if (extraLedenJSON.data.length > 0) {
-//     extraLeden = extraLedenJSON.data.map((lid) => {
-//       return {
-//         title: lid.text.replace('Branco_', ''),
-//         address: lid.for,
-//         colleagues: lid.from
-//       }
-//     })
-//   }
-
-//   const {provincie} = request.query;
-//   console.log(request.query);
-
-
-//   let apiResponseProvincie;
-
-//   if (provincie === undefined || provincie === '') {
-//     apiResponseProvincie = await fetch ('https://fdnd-agency.directus.app/items/dda_agencies');
-//   } else {
-//     apiResponseProvincie = await fetch ('https://fdnd-agency.directus.app/items/dda_agencies?filter[province_string][_eq]=' + request.query.provincie)
-//   }
-
-//   const apiResponseProvincieJSON = await apiResponseProvincie.json()
-
-//   response.render('leden.liquid', { leden: [...apiResponseJSON.data, ...extraLeden] })
-// })
-
-
 app.get('/leden', async function (request, response) {
   // Verkrijg de filters uit de queryparameters
   const { provincie, omvang, sorteren } = request.query;
@@ -142,15 +104,36 @@ app.get('/leden', async function (request, response) {
 //       'Content-Type': 'application/json;charset=UTF-8'
 //     }
 //   });
-
-//   if (res.ok) {
-//     // Stuur een succesbericht terug als JSON
-//     response.json({ success: true, message: 'Lid toegevoegd!' });
-//   } else {
-//     // Stuur een foutbericht terug als JSON
-//     response.json({ success: false, message: 'Er is een fout opgetreden.' });
-//   }
 // });
+
+app.post('/leden/nieuw/toevoegen/', async function (request, response) {
+
+  // Haal de gegevens uit de request body (title, address, colleagues)
+  const { title, address, colleagues } = request.body;
+
+  // Maak de juiste tekst op basis van de titel uit de body
+  const text = "Branco_" + title;
+
+  // Haal de Directus API response op met de nodige gegevens
+  const apiResponse = await fetch('https://fdnd-agency.directus.app/items/dda_messages/', {
+    method: 'POST',
+    body: JSON.stringify({
+      text: text,
+      for: address,
+      from: colleagues,
+    }),
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  });
+
+  // Log de API-respons om te controleren of het goed gaat
+  const apiResponseJSON = await apiResponse.json();
+  console.log(apiResponseJSON);
+
+  // Verzend een redirect na het succesvol toevoegen van de gegevens
+  response.redirect(303, '/leden/nieuw/toevoegen/?success=true');
+});
 
 // Stel het poortnummer in waar Express op moet gaan luisteren
 // Lokaal is dit poort 8000; als deze applicatie ergens gehost wordt, waarschijnlijk poort 80

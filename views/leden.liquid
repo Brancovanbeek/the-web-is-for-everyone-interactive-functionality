@@ -97,41 +97,31 @@
     <div class="loader"></div>
 
 
-   <section class="lid-toevoegen-container">
-        <details class="subtext">
-            <summary>Lid toevoegen</summary>
-            <form class="lid-toevoegen-form" action="/leden/nieuw/toevoegen" method="POST" data-enhanced="form">
-                <label class="subtext" for="title">Agency Name</label>
-                <input placeholder="Funda" name="title" type="text">
-        
-                <label class="subtext" for="address">Agency Location</label>
-                <input placeholder="Amsterdam"  name="address" type="text">
-        
-                <label class="subtext" for="colleagues">Agency Employees</label> 
-                <input placeholder="80" name="colleagues" type="text">
-        
-                <button class="subtext" type="submit">SUBMIT</button>
-            </form>   
-        </details>
-   </section>
+    <section class="lid-toevoegen-container">
+      <details class="subtext">
+          <summary>Lid toevoegen</summary>
+          <form class="lid-toevoegen-form" action="/leden/nieuw/toevoegen" method="POST" data-enhanced="form">
+              <label class="subtext" for="title">Agency Name</label>
+              <input id="title" placeholder="Funda" name="title" type="text" required>
+  
+              <label class="subtext" for="address">Agency Location</label>
+              <input id="address" placeholder="Amsterdam" name="address" type="text" required>
+  
+              <label class="subtext" for="colleagues">Agency Employees</label>
+              <input id="colleagues" placeholder="80" name="colleagues" type="text" required>
+  
+              <button class="subtext" type="submit">SUBMIT</button>
+          </form>
+      </details>
+  </section>
 
-
-
-    {% if request.query.succes %}
-        <div class="succes-melding">
-          {{ request.query.succes }}
-        </div>
-      {% endif %}
-      
-      {% if request.query.error %}
-        <div class="error-melding">
-          {{ request.query.error }}
-        </div>
-    {% endif %}
-      
-    
+  <p id="succes">Nieuw lid toegevoegd!</p>
+  
+  
 
 </main>
+
+
 
 <script src="/scripts/script.js"></script>
 
@@ -156,54 +146,57 @@ if ('fetch' in window && 'DOMParser' in window) {
       return;
     }
 
-    const loader = document.querySelector('.loader');
-
     // Voorkom de standaard submit van de browser
     // Let op: hiermee overschrijven we de default Loading state van de browser...
     event.preventDefault();
 
+    form.classList.add("submitting");
+
+    const loader = document.querySelector('.loader');
     loader.classList.add('show');
 
-    try {
+    
       // Doe een fetch naar de server, net als hoe de browser dit normaal zou doen
       // Gebruik daarvoor het action en method attribuut van het originele formulier
       // Inclusief alle formulierelementen
-      const response = await fetch(form.action, {
-        method: form.method,
-        body: new URLSearchParams(new FormData(form)),
-      });
+    const response = await fetch(form.action, {
+      method: form.method,
+      body: new URLSearchParams(new FormData(form))
+    });
 
-      // De server kan HTML teruggeven, dus we verwachten een tekstuele reactie
+      // Converteer de serverrespons naar JSON
       const responseText = await response.text();
 
+      // Normaal zou de browser die HTML parsen en weergeven, maar daar moeten we nu zelf iets mee
       // Parse de nieuwe HTML en maak hiervan een nieuw Document Object Model in het geheugen
       const parser = new DOMParser();
       const responseDOM = parser.parseFromString(responseText, 'text/html');
-
-      // Zoek in de nieuwe DOM naar onze nieuwe state, die we via Liquid hebben klaargemaakt
+  
+      // Zoek in die nieuwe DOM onze nieuwe state op, die we via Liquid hebben klaargemaakt
       // We gebruiken hiervoor het data-enhanced attribuut, zodat we weten waar we naar moeten zoeken
       // (Hierdoor kunnen we ook meerdere formulieren op dezelfde pagina gebruiken)
       const newState = responseDOM.querySelector('[data-enhanced="' + form.getAttribute('data-enhanced') + '"]');
-
+  
       // Overschrijf ons formulier met de nieuwe HTML
       // Hier wil je waarschijnlijk de Loading state vervangen door een Success state
       form.outerHTML = newState.outerHTML;
-
-      // Optioneel: Je kunt hier ook een succesboodschap tonen aan de gebruiker
-      // Bijvoorbeeld: alert('Formulier succesvol ingediend!');
+  
+      // Reset het formulier na succes
+      form.reset();
+    
+      document.querySelector(".loader");
+      loader.classList.remove("show");
       
-    } catch (error) {
-      console.error('Error tijdens formulierverzending:', error);
-      alert('Er is een fout opgetreden tijdens het verzenden.');
-    } finally {
-      // Verwijder de loader na afronding
-      loader.classList.remove('show');
-    }
+      const successMessage = document.getElementById('succes');
+      if (successMessage) {
+        successMessage.style.display = 'block';
 
-  });
-}
+        setTimeout(() => {
+          successMessage.style.display = 'none';
+        }, 3000);
+      }
+    });
+  }
 </script>
-
-
 
 {% render 'partials/foot.liquid' %}
