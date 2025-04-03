@@ -54,6 +54,12 @@ p {
     line-height: clamp(24px, 3vw, 32px);
 }
 
+li a{
+    font-size: clamp(16px, 2vw, 18px);
+    font-weight: 400;
+    line-height: clamp(24px, 3vw, 32px);
+}
+
 /* Subtext met monospace font */
 .subtext{
     font-family: 'Martian Mono', monospace;

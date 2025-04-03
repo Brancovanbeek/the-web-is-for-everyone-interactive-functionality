@@ -176,47 +176,6 @@ select {
     width: 100%;
 }
 
-
-/* footer */
-footer ul li{
-    list-style: none;
-}
-
-footer section{
-    border-bottom: 1px solid black;
-}
-
-.infinite-logo-container{
-    width: 100vw;
-    overflow: hidden;
-    margin: 0;
-}
-
-.infinite-logo-bar{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: scroll 10s linear infinite;
-}
-
-@keyframes scroll{
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(100%);
-    }
-}
-
-.infinite-logo-bar > img{
-    width: 5em;
-    height: 5em;
-    border: none;
-    border: 1px solid var(--black);
-    padding: 1em;
-    border-collapse: collapse;
-}
-
 #filter-submit-button{
     border: solid black 1px;
     background: none;
@@ -256,8 +215,6 @@ footer section{
     }
 }
     
-
-
 .lid-toevoegen-container{
     padding: 2em;
 }
@@ -306,3 +263,93 @@ summary{
 .show {
     opacity: 100%;
 }
+
+/* footer */
+
+footer ul li{
+    list-style: none;
+}
+
+footer section{
+    border-bottom: 1px solid black;
+}
+
+.infinite-logo-container{
+    width: 100vw;
+    overflow: hidden;
+    margin: 0;
+}
+
+.infinite-logo-bar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: scroll 10s linear infinite;
+}
+
+@keyframes scroll{
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.infinite-logo-bar > img{
+    width: 5em;
+    height: 5em;
+    border: none;
+    border: 1px solid var(--black);
+    padding: 1em;
+    border-collapse: collapse;
+}
+
+.footer-logo-section{
+    display: flex;
+    flex-direction: column;
+    .footer-logo{
+        width: 100px;
+        margin-left: 2em;
+        margin-top: 3em;
+        margin-bottom: 2em;
+    }
+    a{
+        margin-left: 2em;
+        margin-bottom: 2em;
+        text-decoration: none;
+        color: var(--blue);
+        display: flex;
+        gap: 0.5em;
+    }
+}
+
+.footer-navigation-list-section ul{
+    text-decoration: underline;
+    text-underline-offset: 5px;
+    margin-left: 2em;
+    padding: 0;
+    margin-bottom: 2em;
+    margin-top: 2em;
+}
+
+.footer-info-section{
+    display: flex;
+    flex-direction: column;
+}
+.footer-info-section-address{
+    padding: 0;
+    margin-left: 2em;
+}
+.footer-info-section-contact{
+    padding: 0;
+    margin-left: 2em;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+}
+
+.footer-info-section-address li:first-child p {
+    font-weight: bold;
+}
+
+
